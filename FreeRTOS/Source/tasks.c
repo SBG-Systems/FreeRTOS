@@ -26,6 +26,7 @@
  */
 
 /* Standard includes. */
+#include <stdalign.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -340,6 +341,9 @@ typedef struct tskTaskControlBlock 			/* The old naming convention is used to pr
 		int iTaskErrno;
 	#endif
 
+	#if( configTLS_DATA_SIZE != 0)
+		alignas(portBYTE_ALIGNMENT) uint8_t ucTlsData[configTLS_DATA_SIZE];
+	#endif
 } tskTCB;
 
 /* The old tskTCB name is maintained above then typedefed to the new TCB_t name
@@ -1027,6 +1031,12 @@ UBaseType_t x;
 		pxNewTCB->pxTopOfStack = pxPortInitialiseStack( pxTopOfStack, pxTaskCode, pvParameters );
 	}
 	#endif /* portUSING_MPU_WRAPPERS */
+
+	#if( configTLS_DATA_SIZE != 0)
+	{
+		vPortInitialiseTlsData( pxNewTCB->ucTlsData );
+	}
+	#endif /* configTLS_DATA_SIZE */
 
 	if( pxCreatedTask != NULL )
 	{

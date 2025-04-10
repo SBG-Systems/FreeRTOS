@@ -31,6 +31,7 @@
 /*
  * Include the generic headers required for the FreeRTOS port being used.
  */
+#include <stdalign.h>
 #include <stddef.h>
 
 /*
@@ -70,6 +71,11 @@ extern "C" {
 #if ( configUSE_NEWLIB_REENTRANT == 1 )
 	#include <reent.h>
 #endif
+
+#ifndef configTLS_DATA_SIZE
+	#define configTLS_DATA_SIZE 0
+#endif
+
 /*
  * Check all the required application specific macros have been defined.
  * These macros are application specific and (as downloaded) are defined
@@ -1043,6 +1049,9 @@ typedef struct xSTATIC_TCB
 	#endif
 	#if ( configUSE_POSIX_ERRNO == 1 )
 		int				iDummy22;
+	#endif
+	#if( configTLS_DATA_SIZE != 0)
+		alignas(portBYTE_ALIGNMENT) uint8_t ucDummy23[ configTLS_DATA_SIZE ];
 	#endif
 } StaticTask_t;
 

@@ -2329,6 +2329,12 @@ TaskHandle_t pvTaskIncrementMutexHeldCount( void ) PRIVILEGED_FUNCTION;
  */
 void vTaskInternalSetTimeOutState( TimeOut_t * const pxTimeOut ) PRIVILEGED_FUNCTION;
 
+/*
+ * For port use only.  Get the TLS data block associated with a task.
+ */
+#if( configTLS_DATA_SIZE != 0)
+	void *pvTaskGetTlsData( void ) PRIVILEGED_FUNCTION;
+#endif /* configTLS_DATA_SIZE */
 
 #ifdef __cplusplus
 }

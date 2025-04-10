@@ -157,6 +157,13 @@ void vPortEndScheduler( void ) PRIVILEGED_FUNCTION;
 	void vPortStoreTaskMPUSettings( xMPU_SETTINGS *xMPUSettings, const struct xMEMORY_REGION * const xRegions, StackType_t *pxBottomOfStack, uint32_t ulStackDepth ) PRIVILEGED_FUNCTION;
 #endif
 
+/*
+ * Initialize TLS data.
+ */
+#if( configTLS_DATA_SIZE != 0 )
+	void vPortInitialiseTlsData( void *pvTlsData ) PRIVILEGED_FUNCTION;
+#endif /* configTLS_DATA_SIZE */
+
 #ifdef __cplusplus
 }
 #endif
